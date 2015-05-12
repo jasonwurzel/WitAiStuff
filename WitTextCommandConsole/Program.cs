@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using WitAIClient;
 using WitAIClient.ProcessIntents;
 
@@ -31,7 +32,11 @@ namespace WitTextCommandConsole
 						ProcessSpeechCommands();
 					}
 					else
-						ProcessTextCommands();
+					{
+						Console.WriteLine("What would you like to do?");
+						var command = Console.ReadLine();
+						ProcessTextCommands(command);
+					}
 					
 				}
 			}
@@ -47,26 +52,33 @@ namespace WitTextCommandConsole
 				audioRecorder.StopRecording();
 
 				ResultFromMessageRequest response;
-				using (var audioStream = File.OpenRead(audioRecorder.AudioFileName))
-					response = new WitSpeechRequestTask().DoWork(audioStream);
 
-				ProcessOutcomes(response);
+				new Task(() =>
+						{
+							using (var audioStream = File.OpenRead(audioRecorder.AudioFileName))
+								response = new WitSpeechRequestTask().DoWork(audioStream);
+							ProcessOutcomes(response);
+						}).Start();
+
 				Console.WriteLine("finished");
 			}
 		}
 
-		private static void ProcessTextCommands()
+		private static void ProcessTextCommands(string command)
 		{
-			var command = Console.ReadLine();
-			var result = new WitMessageRequestTask().DoWork(command);
-			ProcessOutcomes(result);
+			new Task(() =>
+					{
+						var result = new WitMessageRequestTask().DoWork(command);
+						ProcessOutcomes(result);
+					}).Start();
+
 		}
 
 		private static void ProcessOutcomes(ResultFromMessageRequest result)
 		{
 			foreach (var outcome in result.Outcomes)
 			{
-				Console.WriteLine("Confidence: {0} Intent: {1}", outcome.Confidence, outcome.Intent);
+				Console.WriteLine("***Confidence: {0} Intent: {1}", outcome.Confidence, outcome.Intent);
 			}
 
 			if (result.Outcomes.Any())

@@ -36,8 +36,10 @@ namespace WitAIClient.ProcessIntents
 			{
 				CommonWindowsCalls.Process(@"C:\Programme\tortoiseSVN\bin\TortoiseProc.exe", @"/command:update /path:C:\Sourcen\trunk\trunk");
 			}
-			else if(intent == "commit_trunk")
+			else if (intent == "commit_branch_svn")
 			{
+				// TODO: 
+				/*{  "msg_id" : "3bb28716-27db-4938-a174-3abc9c1fb19d",  "_text" : "commit trunk",  "outcomes" : [ {    "_text" : "commit trunk",    "intent" : "commit_branch_svn",    "entities" : {      "branch_name" : [ {        "value" : "trunk"      } ]    },    "confidence" : 0.994  } ]}*/
 				CommonWindowsCalls.Process(@"C:\Programme\tortoiseSVN\bin\TortoiseProc.exe", @"/command:commit /path:C:\Sourcen\trunk\trunk");
 			}
 			else if(intent == "log_trunk")
@@ -58,8 +60,7 @@ namespace WitAIClient.ProcessIntents
 			}
 			else if(intent == "music_next_track")
 			{
-
-				CommonWindowsCalls.Process(@"C:\Program Files (x86)\MediaMonkey\MediaMonkey.exe");
+				// TODO
 			}
 		}
 	}
