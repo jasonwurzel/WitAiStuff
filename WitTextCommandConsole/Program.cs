@@ -10,11 +10,30 @@ namespace WitTextCommandConsole
 	{
 		private static void Main(string[] args)
 		{
-			TestSpeechActivation.Process(ProcessSpeechCommands);
-
-			while (true)
+			bool speechActivation = false;
+			bool speech = false;
+			if (speechActivation)
 			{
-				
+				TestSpeechActivation.Process(ProcessSpeechCommands);
+				while (true)
+				{
+
+				}
+			}
+			else
+			{
+				while (true)
+				{
+					if (speech)
+					{
+						Console.WriteLine("Press enter to start recording speech command!");
+						Console.ReadLine();
+						ProcessSpeechCommands();
+					}
+					else
+						ProcessTextCommands();
+					
+				}
 			}
 		}
 
@@ -22,8 +41,6 @@ namespace WitTextCommandConsole
 		{
 			using (var audioRecorder = new AudioRecorder())
 			{
-				//Console.WriteLine("Press enter to start recording speech command!");
-				//Console.ReadLine();
 				Console.WriteLine("Recording...To finish recording and process spoken command, press enter again!");
 				audioRecorder.StartRecording();
 				Console.ReadLine();

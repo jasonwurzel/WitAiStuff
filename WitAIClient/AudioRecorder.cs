@@ -51,7 +51,7 @@ namespace WitAIClient
 			//_waveFileWriter = null;
 		}
 
-		void waveIn_DataAvailable(object sender, NAudio.Wave.WaveInEventArgs e)
+		void waveIn_DataAvailable(object sender, WaveInEventArgs e)
 		{
 			_waveFileWriter.Write(e.Buffer, 0, e.Buffer.Length);
 

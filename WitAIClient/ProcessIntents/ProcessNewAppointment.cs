@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Microsoft.Office.Interop.Outlook;
 
 namespace WitAIClient.ProcessIntents

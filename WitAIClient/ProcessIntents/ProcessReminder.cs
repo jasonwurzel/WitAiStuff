@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Globalization;
+using System.Configuration;
 using System.Linq;
 using todoistsharp;
 
@@ -7,7 +7,7 @@ namespace WitAIClient.ProcessIntents
 {
 	public class ProcessReminder
 	{
-		private static string _todoistApiToken = "7ce6336751321a8ab9dc6904782ab7f00621e17f";
+		private static string _todoistApiToken = ConfigurationManager.AppSettings["todoistAccessToken"];
 
 		public static void Go(Outcome mostConfidentOutcome)
 		{
@@ -51,7 +51,7 @@ namespace WitAIClient.ProcessIntents
 			todoist.Login(_todoistApiToken);
 			var projects = todoist.GetProjects();
 			var projectId = projects.FirstOrDefault().id;
-			var addItem = todoist.AddItem(projectId, reminderText, date_string: "", dueDate: dueDate);
+			var addedItem = todoist.AddItem(projectId, reminderText, date_string: "", dueDate: dueDate);
 		}
 	}
 }

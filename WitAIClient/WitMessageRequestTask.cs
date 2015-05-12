@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -17,7 +18,7 @@ namespace WitAIClient
 		private const String ACCEPT_VERSION = "application/vnd.wit." + VERSION;
 		private readonly String _accessToken;
 
-		public WitMessageRequestTask() { _accessToken = File.ReadAllText("accessToken.txt"); }
+		public WitMessageRequestTask() { _accessToken = ConfigurationManager.AppSettings["witAccessToken"]; }
 
 		public static String convertStreamToString(Stream inputStream)
 		{

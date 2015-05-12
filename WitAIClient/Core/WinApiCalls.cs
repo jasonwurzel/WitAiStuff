@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Core
@@ -29,7 +28,7 @@ namespace Core
 			UInt32 reason = 0;
 			UInt32 gracePeriod = 5;
 			if (safetyQuery())
-				InitiateShutdown(System.Environment.MachineName, "", gracePeriod, flags, reason);
+				InitiateShutdown(Environment.MachineName, "", gracePeriod, flags, reason);
 			//Console.WriteLine("Dummy Shutdown");
 		}
 
@@ -39,7 +38,7 @@ namespace Core
 			UInt32 reason = 0;
 			UInt32 gracePeriod = 5;
 			if (safetyQuery())
-				InitiateShutdown(System.Environment.MachineName, "", gracePeriod, flags, reason);
+				InitiateShutdown(Environment.MachineName, "", gracePeriod, flags, reason);
 			//Console.WriteLine("Dummy Restart");
 		}
 	}

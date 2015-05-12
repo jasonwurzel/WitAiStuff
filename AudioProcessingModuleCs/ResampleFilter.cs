@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace AudioProcessingModuleCs.Media.Dsp
 {
 	/// <summary>
