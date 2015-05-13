@@ -5,7 +5,9 @@ using System.Linq;
 using System.Speech.Recognition;
 using System.Windows.Forms;
 using FluentAssertions;
+using FluentAssertions.Primitives;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using WitAIClient;
 
@@ -47,7 +49,7 @@ namespace WitAITest
 			// Handle the SpeechRecognized event.
 			static void recognizer_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
 			{
-				Console.WriteLine("Recognized text: " + e.Result.Text);
+				Console.WriteLine("***Recognized text: " + e.Result.Text);
 			}
 
 			/// <summary>
@@ -168,12 +170,12 @@ namespace WitAITest
 				var firstOutcome = resultFromMessageRequest.Outcomes.ElementAt(0);
 				firstOutcome.Confidence.Should().Be(0.66);
 				firstOutcome.Text.Should().Be("Remind me to call Alexandra in 10 Minutes");
-				firstOutcome.Entities.Reminder.Count.Should().Be(1);
-				firstOutcome.Entities.Reminder.ElementAt(0).Value.Should().Be("call Alexandra");
-				firstOutcome.Entities.DateTime.Count.Should().Be(1);
-				firstOutcome.Entities.DateTime.ElementAt(0).Grain.Should().Be("second");
-				firstOutcome.Entities.DateTime.ElementAt(0).Type.Should().Be("value");
-				firstOutcome.Entities.DateTime.ElementAt(0).Value.Should().Be(new DateTime(2014,10,27,15,11,35));
+				((int)firstOutcome.Entities.reminder.Count).Should().Be(1);
+				((string)firstOutcome.Entities.reminder[0].value).Should().Be("call Alexandra");
+				((int)firstOutcome.Entities.datetime.Count).Should().Be(1);
+				((string)firstOutcome.Entities.datetime[0].grain).Should().Be("second");
+				((string)firstOutcome.Entities.datetime[0].type).Should().Be("value");
+				((DateTime)firstOutcome.Entities.datetime[0].value).Should().Be(new DateTime(2014,10,27,15,11,35));
 			}
 			
 			/// <summary>
@@ -217,16 +219,17 @@ namespace WitAITest
 				var firstOutcome = resultFromMessageRequest.Outcomes.ElementAt(0);
 				firstOutcome.Confidence.Should().Be(0.657);
 				firstOutcome.Text.Should().Be("remind me to clean tonight");
-				firstOutcome.Entities.Reminder.Count.Should().Be(1);
-				firstOutcome.Entities.Reminder.ElementAt(0).Value.Should().Be("clean");
-				firstOutcome.Entities.DateTime.Count.Should().Be(1);
-				firstOutcome.Entities.DateTime.ElementAt(0).Grain.Should().BeNull();
-				firstOutcome.Entities.DateTime.ElementAt(0).Type.Should().Be("interval");
-				firstOutcome.Entities.DateTime.ElementAt(0).Value.Should().NotHaveValue();
-				firstOutcome.Entities.DateTime.ElementAt(0).From.Value.Should().Be(new DateTime(2014, 11, 06, 18, 00, 00));
-				firstOutcome.Entities.DateTime.ElementAt(0).To.Value.Should().Be(new DateTime(2014, 11, 07, 00, 00, 00));
+				((int)firstOutcome.Entities.reminder.Count).Should().Be(1);
+				((string)firstOutcome.Entities.reminder[0].value).Should().Be("clean");
+				((int)firstOutcome.Entities.datetime.Count).Should().Be(1);
+				((string)firstOutcome.Entities.datetime[0].grain).Should().BeNull();
+				((string)firstOutcome.Entities.datetime[0].type).Should().Be("interval");
+				((DateTime?)firstOutcome.Entities.datetime[0].value).Should().NotHaveValue();
+				((DateTime)firstOutcome.Entities.datetime[0].from.value).Should().Be(new DateTime(2014, 11, 06, 18, 00, 00));
+				((DateTime)firstOutcome.Entities.datetime[0].to.value).Should().Be(new DateTime(2014, 11, 07, 00, 00, 00));
 
 			}
+
 			/// <summary>
 			/// Kommentar2
 			/// </summary>
@@ -255,17 +258,48 @@ namespace WitAITest
 				var firstOutcome = resultFromMessageRequest.Outcomes.ElementAt(0);
 				firstOutcome.Confidence.Should().Be(0.994);
 				firstOutcome.Text.Should().Be("new appointment tonight at the cinema");
-				firstOutcome.Entities.Message_Subject.Count.Should().Be(1);
-				firstOutcome.Entities.Message_Subject.ElementAt(0).Value.Should().Be("cinema");
+				((int)firstOutcome.Entities.message_subject.Count).Should().Be(1);
+				((string)firstOutcome.Entities.message_subject[0].value).Should().Be("cinema");
+			}
+
+			/// <summary>
+			/// Kommentar2
+			/// </summary>
+			[Test]
+			public void TestDeserializeResult04()
+			{
+				var response = @"{
+	""msg_id"" : ""3bb28716-27db-4938-a174-3abc9c1fb19d"",
+	""_text"" : ""commit trunk"",
+	""outcomes"" : [{
+			""_text"" : ""commit trunk"",
+			""intent"" : ""commit_branch_svn"",
+			""entities"" : {
+				""branch_name"" : [{
+						""value"" : ""trunk""
+					}
+				]
+			},
+			""confidence"" : 0.994
+		}
+	]
+}
+";
+				var jsonTextReader = new JsonTextReader(new StringReader(response));
+				var resultFromMessageRequest = JsonSerializer.Create().Deserialize<ResultFromMessageRequest>(jsonTextReader);
+				resultFromMessageRequest.MessageId.Should().Be("3bb28716-27db-4938-a174-3abc9c1fb19d");
+				resultFromMessageRequest.Text.Should().Be("commit trunk");
+				resultFromMessageRequest.Outcomes.Count.Should().Be(1);
+				var firstOutcome = resultFromMessageRequest.Outcomes.ElementAt(0);
+				firstOutcome.Confidence.Should().Be(0.994);
+				firstOutcome.Text.Should().Be("commit trunk");
+				firstOutcome.Intent.Should().Be("commit_branch_svn");
+				int count = firstOutcome.Entities.branch_name.Count;
+				count.Should().Be(1);
+				string branchName = firstOutcome.Entities.branch_name[0].value;
+				branchName.Should().Be("trunk");
 			}
 		}
-
-	//@Override
-	//protected void onPostExecute(String result) {
-	//}
-	//}
-
-	
 }
 
 

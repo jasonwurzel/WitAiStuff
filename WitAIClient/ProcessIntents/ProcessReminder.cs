@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using todoistsharp;
@@ -15,33 +17,33 @@ namespace WitAIClient.ProcessIntents
 			// TODO: ProcessNewAppointment.Go(mostConfidentOutcome); wenn 2 Datümer.... (=> Calendar Entry)
 			if (mostConfidentOutcome.Entities != null)
 			{
-				if (mostConfidentOutcome.Entities.Reminder != null)
+				if (mostConfidentOutcome.Entities.reminder != null)
 				{
-					var reminders = mostConfidentOutcome.Entities.Reminder;
+					var reminders = mostConfidentOutcome.Entities.reminder;
 					foreach (var reminder in reminders)
 					{
-						Console.WriteLine("reminder set:	Task: {0}", string.Join("***", reminder.Value));
+						Console.WriteLine("***reminder set:	Task: {0}", string.Join("***", reminder.value));
 					}
 				}
 				DateTime? dueDate = null;
-				if (mostConfidentOutcome.Entities.DateTime != null)
+				if (mostConfidentOutcome.Entities.datetime != null)
 				{
-					dueDate = mostConfidentOutcome.Entities.DateTime.Select(time => time.Value).FirstOrDefault();
-					foreach (var dateAndTime in mostConfidentOutcome.Entities.DateTime)
+					dueDate = ((IEnumerable<dynamic>)mostConfidentOutcome.Entities.datetime).Select<dynamic, DateTime?>(time => time.value).FirstOrDefault();
+					foreach (var dateAndTime in mostConfidentOutcome.Entities.datetime)
 					{
-						if (dateAndTime.Type == "interval")
+						if (dateAndTime.type == "interval")
 						{
-							Console.WriteLine("		interval: from: {0} to: {1}", dateAndTime.From.Value, dateAndTime.To.Value);
+							Console.WriteLine("***interval: from: {0} to: {1}", dateAndTime.from.value, dateAndTime.to.value);
 						}
-						else if (dateAndTime.Type == "value")
+						else if (dateAndTime.type == "value")
 						{
-							Console.WriteLine("		time: {0}", dateAndTime.Value);
+							Console.WriteLine("***time: {0}", dateAndTime.value);
 						}
 					}
 					
 				}
 
-				if (mostConfidentOutcome.Entities.Reminder != null) AddItemInTodoist(mostConfidentOutcome.Entities.Reminder.First().Value, dueDate);
+				if (mostConfidentOutcome.Entities.reminder != null) AddItemInTodoist((string)mostConfidentOutcome.Entities.reminder[0].value, dueDate);
 			}
 		}
 

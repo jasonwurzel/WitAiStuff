@@ -38,7 +38,7 @@ namespace WitAIClient
 		public ResultFromMessageRequest DoWork(String text)
 		{
 			String response = null;
-			Console.WriteLine("Requesting ...." + text[0]);
+			Console.WriteLine("***Requesting ...." + text[0]);
 			String getUrl = String.Format("{0}{1}", WIT_URL, HttpUtility.UrlEncode(text));
 			Uri url = new Uri(getUrl);
 			var request = (HttpWebRequest)WebRequest.Create(url);

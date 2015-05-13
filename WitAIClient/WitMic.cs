@@ -49,7 +49,7 @@ public class WitMic {
                 SamplesReaderThread s = new SamplesReaderThread(this, _outStream, getMinBufferSize());
                 s.start();
             } else {
-                Console.WriteLine("AudioRecord not initialized, calling stop for cleaning!");
+				Console.WriteLine("***AudioRecord not initialized, calling stop for cleaning!");
                 stopRecording();
             }
         }

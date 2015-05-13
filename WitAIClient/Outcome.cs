@@ -9,7 +9,7 @@ namespace WitAIClient
 		[JsonProperty("intent")]
 		public string Intent { get; set; }
 		[JsonProperty("entities")]
-		public CommonEntity Entities { get; set; }
+		public dynamic Entities { get; set; }
 		public double Confidence { get; set; }
 	}
 }

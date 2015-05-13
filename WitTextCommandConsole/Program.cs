@@ -52,13 +52,13 @@ namespace WitTextCommandConsole
 				audioRecorder.StopRecording();
 
 				ResultFromMessageRequest response;
-
-				new Task(() =>
+				
+				Task.Run(() =>
 						{
 							using (var audioStream = File.OpenRead(audioRecorder.AudioFileName))
 								response = new WitSpeechRequestTask().DoWork(audioStream);
 							ProcessOutcomes(response);
-						}).Start();
+						});
 
 				Console.WriteLine("finished");
 			}
@@ -66,11 +66,11 @@ namespace WitTextCommandConsole
 
 		private static void ProcessTextCommands(string command)
 		{
-			new Task(() =>
+			Task.Run(() =>
 					{
 						var result = new WitMessageRequestTask().DoWork(command);
 						ProcessOutcomes(result);
-					}).Start();
+					});
 
 		}
 

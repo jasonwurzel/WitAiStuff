@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace WitAIClient.Core
 {
@@ -6,21 +7,16 @@ namespace WitAIClient.Core
 	{
 		public static void StartProcess(Outcome commandLine)
 		{
-			// @"W:\trunk\trunk\formware10cs.sln"
-			var subject = commandLine.Entities.Message_Subject;
-			if (subject == null || !subject.Any())
+			Dictionary<string, string> appNameAndPath = new Dictionary<string, string>
+														{
+															{"explorer", "explorer"},
+															{"visual studio", @"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe"}
+														};
+			if (commandLine.Entities.app_name == null || commandLine.Entities.app_name.Count == 0)
 				return;
 
-			var messageSubject = subject.FirstOrDefault();
-			if (messageSubject == null)
-				return;
-
-			var target = messageSubject.Value.ToLower();
-			if (target.ToLower() == "explorer")
-				Process("explorer");
-			if (target.ToLower() == "visual studio")
-				Process(@"C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE\devenv.exe");
-			
+			string appName = commandLine.Entities.app_name[0].value;
+			Process(appNameAndPath[appName.ToLower()]);
 		}
 
 		public static void Process(string exeName, string arguments = null) { System.Diagnostics.Process.Start(exeName, arguments); }

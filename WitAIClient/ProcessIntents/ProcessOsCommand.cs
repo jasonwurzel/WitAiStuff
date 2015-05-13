@@ -26,7 +26,7 @@ namespace WitAIClient.ProcessIntents
 					WinApiCalls.ShutdownWorkstation(safetyQuery);
 					break;
 				default:
-					Console.WriteLine("OS Command: {0}", mostConfidentOutcome.Intent); 
+					Console.WriteLine("***OS Command: {0}", mostConfidentOutcome.Intent); 
 					break;
 			}
 		}

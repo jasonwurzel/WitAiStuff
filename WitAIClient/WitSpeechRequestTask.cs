@@ -37,7 +37,7 @@ namespace WitAIClient
 		public ResultFromMessageRequest DoWork(Stream audioStream)
 		{
 			String response = null;
-			Console.WriteLine("Requesting ....");
+			Console.WriteLine("***Requesting ....");
 			Uri url = new Uri(WIT_SPEECH_URL);
 			var request = (HttpWebRequest) WebRequest.Create(url);
 			request.Method = "POST";

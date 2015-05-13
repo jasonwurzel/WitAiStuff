@@ -58,21 +58,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioRecorder.cs" />
-    <Compile Include="CommonEntity.cs" />
     <Compile Include="Core\CommonWindowsCalls.cs" />
     <Compile Include="Core\GlobalValues.cs" />
-    <Compile Include="Message_Subject.cs" />
+    <Compile Include="ProcessIntents\CommitBranchSvn.cs" />
+    <Compile Include="ProcessIntents\LogBranchSvn.cs" />
+    <Compile Include="ProcessIntents\OpenBranchSvn.cs" />
+    <Compile Include="ProcessIntents\OpenMusicPlayer.cs" />
     <Compile Include="ProcessIntents\ProcessNewAppointment.cs" />
     <Compile Include="ProcessIntents\ProcessNewMail.cs" />
     <Compile Include="ProcessIntents\ProcessOsCommand.cs" />
     <Compile Include="ProcessIntents\ProcessOutcome.cs" />
     <Compile Include="ProcessIntents\ProcessReminder.cs" />
     <Compile Include="Core\WinApiCalls.cs" />
-    <Compile Include="DateAndTime.cs" />
-    <Compile Include="IEntity.cs" />
     <Compile Include="Outcome.cs" />
+    <Compile Include="ProcessIntents\StartMusicPlayer.cs" />
+    <Compile Include="ProcessIntents\StopMusicPlayer.cs" />
+    <Compile Include="ProcessIntents\UpdateBranchSvn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reminder.cs" />
     <Compile Include="ResultFromMessageRequest.cs" />
     <Compile Include="WitMessageRequestTask.cs" />
     <Compile Include="WitMic.cs" />
