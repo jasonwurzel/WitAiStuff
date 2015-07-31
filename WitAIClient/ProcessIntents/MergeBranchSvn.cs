@@ -3,7 +3,7 @@ using WitAIClient.Core;
 
 namespace WitAIClient.ProcessIntents
 {
-	public class LogBranchSvn
+	public class MergeBranchSvn
 	{
 		public static ActionOutcome Process(Outcome mostConfidentOutcome)
 		{
@@ -18,7 +18,7 @@ namespace WitAIClient.ProcessIntents
 			if (!branchNameAndPath.ContainsKey(branchName))
 				return ActionOutcome.CommandNotFound;
 
-			CommonWindowsCalls.Process(@"C:\Programme\tortoiseSVN\bin\TortoiseProc.exe", string.Format(@"/command:log /path:{0}", branchNameAndPath[branchName]));
+			CommonWindowsCalls.Process(@"C:\Programme\tortoiseSVN\bin\TortoiseProc.exe", string.Format(@"/command:merge /path:{0}", branchNameAndPath[branchName]));
 
 			return ActionOutcome.Success;
 		}

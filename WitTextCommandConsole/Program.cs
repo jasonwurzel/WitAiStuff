@@ -44,22 +44,18 @@ namespace WitTextCommandConsole
 
 		private static void ProcessSpeechCommands()
 		{
+			Console.WriteLine("Recording...To finish recording and process spoken command, press enter again!");
+
+			ResultFromMessageRequest response;
+
 			using (var audioRecorder = new AudioRecorder())
 			{
-				Console.WriteLine("Recording...To finish recording and process spoken command, press enter again!");
 				audioRecorder.StartRecording();
 				Console.ReadLine();
 				audioRecorder.StopRecording();
-
-				ResultFromMessageRequest response;
-				
-				Task.Run(() =>
-						{
-							using (var audioStream = File.OpenRead(audioRecorder.AudioFileName))
-								response = new WitSpeechRequestTask().DoWork(audioStream);
-							ProcessOutcomes(response);
-						});
-
+				using (var audioStream = File.OpenRead(audioRecorder.AudioFileName))
+					response = new WitSpeechRequestTask().DoWork(audioStream);
+				ProcessOutcomes(response);
 				Console.WriteLine("finished");
 			}
 		}

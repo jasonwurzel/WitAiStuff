@@ -5,9 +5,11 @@ namespace WitAIClient.ProcessIntents
 {
 	public class StartMusicPlayer
 	{
-		public static void Process(Outcome mostConfidentOutcome)
+		public static ActionOutcome Process(Outcome mostConfidentOutcome)
 		{
 			new InputSimulator().Keyboard.KeyPress(VirtualKeyCode.MEDIA_PLAY_PAUSE);
+
+			return ActionOutcome.Success;
 		}
 	}
 }

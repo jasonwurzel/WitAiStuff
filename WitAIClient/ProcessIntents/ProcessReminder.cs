@@ -11,7 +11,7 @@ namespace WitAIClient.ProcessIntents
 	{
 		private static string _todoistApiToken = ConfigurationManager.AppSettings["todoistAccessToken"];
 
-		public static void Go(Outcome mostConfidentOutcome)
+		public static ActionOutcome Go(Outcome mostConfidentOutcome)
 		{
 
 			// TODO: ProcessNewAppointment.Go(mostConfidentOutcome); wenn 2 Datümer.... (=> Calendar Entry)
@@ -21,30 +21,25 @@ namespace WitAIClient.ProcessIntents
 				{
 					var reminders = mostConfidentOutcome.Entities.reminder;
 					foreach (var reminder in reminders)
-					{
 						Console.WriteLine("***reminder set:	Task: {0}", string.Join("***", reminder.value));
-					}
 				}
 				DateTime? dueDate = null;
 				if (mostConfidentOutcome.Entities.datetime != null)
 				{
 					dueDate = ((IEnumerable<dynamic>)mostConfidentOutcome.Entities.datetime).Select<dynamic, DateTime?>(time => time.value).FirstOrDefault();
 					foreach (var dateAndTime in mostConfidentOutcome.Entities.datetime)
-					{
 						if (dateAndTime.type == "interval")
-						{
 							Console.WriteLine("***interval: from: {0} to: {1}", dateAndTime.from.value, dateAndTime.to.value);
-						}
 						else if (dateAndTime.type == "value")
-						{
 							Console.WriteLine("***time: {0}", dateAndTime.value);
-						}
-					}
-					
 				}
 
 				if (mostConfidentOutcome.Entities.reminder != null) AddItemInTodoist((string)mostConfidentOutcome.Entities.reminder[0].value, dueDate);
+
+				return ActionOutcome.Success;
 			}
+
+			return ActionOutcome.CommandNotFound;
 		}
 
 		public static void AddItemInTodoist(string reminderText, DateTime? dueDate)

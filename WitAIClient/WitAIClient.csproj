@@ -62,6 +62,7 @@
     <Compile Include="Core\GlobalValues.cs" />
     <Compile Include="ProcessIntents\CommitBranchSvn.cs" />
     <Compile Include="ProcessIntents\LogBranchSvn.cs" />
+    <Compile Include="ProcessIntents\MergeBranchSvn.cs" />
     <Compile Include="ProcessIntents\OpenBranchSvn.cs" />
     <Compile Include="ProcessIntents\OpenMusicPlayer.cs" />
     <Compile Include="ProcessIntents\ProcessNewAppointment.cs" />
